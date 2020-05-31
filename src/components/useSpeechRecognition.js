@@ -1,7 +1,9 @@
 // https://github.com/MikeyParton/react-speech-kit
 import { useRef, useEffect, useState } from 'react'
 
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+if (typeof window !== `undefined`) {
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+}
 
 export const useSpeechRecognition = (props = {}) => {
   const { onEnd = () => {}, onResult = () => {}, onError = () => {} } = props
