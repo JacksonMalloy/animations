@@ -1,22 +1,58 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useState } from 'react'
+import Layout from '../components/layout'
+import styled from 'styled-components'
+import { Shapes } from '../components/shapes'
+import { Content } from '../components/content'
+import { SpeechRecognition } from '../components/SpeechRecognition'
+import { Transcription } from '../components/transcription'
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+const StyledSection = styled.section`
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+`
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
-)
+const IndexPage = () => {
+  const [animation, setAnimation] = useState(null)
+  const [transcript, setTranscript] = useState('')
+  const [listening, setListening] = useState(false)
+
+  console.log(`PHASE OF ANIMATION: `, animation)
+
+  const handleAnimation = () => {
+    if (!animation) {
+      setAnimation('initialized')
+    }
+
+    if (animation === 'initialized') {
+      setAnimation('phase one')
+    }
+
+    if (animation === 'phase one') {
+      setAnimation('phase two')
+    }
+
+    if (animation === 'phase two') {
+      setAnimation('leave')
+    }
+
+    if (animation === 'leave') {
+      setAnimation('initialized')
+    }
+  }
+
+  return (
+    <Layout>
+      <StyledSection>
+        <Content animation={animation} />
+        <Shapes animation={animation} />
+      </StyledSection>
+      <Transcription transcript={transcript} />
+      <SpeechRecognition setTranscript={setTranscript} handleAnimation={handleAnimation} />
+    </Layout>
+  )
+}
 
 export default IndexPage
