@@ -9,7 +9,7 @@ export const useSpeechRecognition = (props = {}) => {
   const { onEnd = () => {}, onResult = () => {}, onError = () => {} } = props
   const recognition = useRef(null)
   const [listening, setListening] = useState(false)
-  const supported = !!window.SpeechRecognition
+  const supported = typeof window !== `undefined` ? !!window.SpeechRecognition : null
 
   const processResult = (event) => {
     const transcript = Array.from(event.results)
