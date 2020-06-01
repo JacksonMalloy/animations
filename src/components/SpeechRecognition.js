@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSpeechRecognition } from './useSpeechRecognition'
 import styled from 'styled-components'
 import { BsMicFill } from 'react-icons/bs'
@@ -28,7 +28,7 @@ const StyledButton = styled.button`
   }
 `
 
-export const SpeechRecognition = ({ setTranscript, handleAnimation }) => {
+export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, animation }) => {
   const [blocked, setBlocked] = useState(false)
 
   const onEnd = () => {
@@ -61,14 +61,15 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation }) => {
 
   return (
     <>
-      {!supported && <p>Oh no, it looks like your browser doesn’t support Speech Recognition.</p>}
-      {supported && (
+      {supported ? (
         <>
           <StyledButton disabled={blocked} type="button" onClick={handleClick}>
             {listening ? <img src={Waveform} alt="loading..." className="invert" /> : <BsMicFill />}
           </StyledButton>
           {blocked && <p style={{ color: 'red' }}>The microphone is blocked for this site in your browser.</p>}
         </>
+      ) : (
+        <p>Oh no, it looks like your browser doesn’t support Speech Recognition.</p>
       )}
     </>
   )

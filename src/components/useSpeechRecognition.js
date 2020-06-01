@@ -12,7 +12,7 @@ export const useSpeechRecognition = (props = {}) => {
   const supported = typeof window !== `undefined` ? !!window.SpeechRecognition : null
 
   const processResult = (event) => {
-    const transcript = Array.from(event.results)
+    let transcript = Array.from(event.results)
       .map((result) => result[0])
       .map((result) => result.transcript)
       .join('')
@@ -30,7 +30,7 @@ export const useSpeechRecognition = (props = {}) => {
 
   const listen = (args = {}) => {
     if (listening) return
-    const { lang = '', interimResults = true, continuous = false, maxAlternatives = 1, grammars } = args
+    const { lang = '', interimResults = true, continuous = true, maxAlternatives = 1, grammars } = args
     setListening(true)
     recognition.current.lang = lang
     recognition.current.interimResults = interimResults

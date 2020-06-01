@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { motion, useAnimation } from 'framer-motion'
+import { Stagger } from './stagger'
+
+// Generic sizes
+const large = '4.2rem'
+const small = '2.1rem'
 
 const StyledSquare = styled(motion.div)`
   height: ${({ size }) => size};
@@ -18,7 +23,6 @@ const StyledSquare = styled(motion.div)`
 const StyledSphere = styled(motion.div)`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
-  background-color: #555;
   border-radius: 100%;
   background-color: ${({ color }) => color};
 `
@@ -39,7 +43,7 @@ const StyledCombine = styled(motion.div)`
     height: 50px;
     position: absolute;
     z-index: 9;
-    top: 13%;
+    top: 12%;
     left: 50%;
     transform: ${({ transform }) => (transform ? 'translate(-50%, -50%)' : 'none')};
   }
@@ -138,12 +142,7 @@ export const Shapes = ({ animation }) => {
       x: -65,
       transition: { delay: i * 0.05, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
     }))
-
-    console.log(`CONTROLS: `, controls)
   }, [controls])
-
-  const large = '4.2rem'
-  const small = '2.1rem'
 
   return (
     <StyledShapes initial={{ x: 80, y: 20 }}>
@@ -151,16 +150,29 @@ export const Shapes = ({ animation }) => {
       <StyledTriangleTopRight color={'#ff83fc'} size={large} custom={1} animate={controls} />
       <StyledCombine custom={2} animate={controls}>
         <StyledSquare color={'#e24d32'} size={large} />
+        <Stagger size={large} />
       </StyledCombine>
       <StyledSphere color={'#ff83fc'} custom={3} animate={controls} size={large} />
       {/* Clipping square */}
       <StyledCombine size={large}>
         <motion.div className="center" custom={4} animate={controls}>
-          <StyledSquare color={'#fff'} size={small} position={'absolute'} transform="true" />
+          <StyledSquare
+            color={'#fff'}
+            size={small}
+            position={'absolute'}
+            transform="true"
+            animate={{ rotate: 90, delay: 1 }}
+            transition={{
+              delay: 1,
+              duration: 0.5,
+              ease: 'easeInOut',
+            }}
+            initial={{ x: -15, y: -15 }}
+          />
         </motion.div>
 
-        <StyledTriangleBottomLeft color={'#0a0b0f'} size={large} position={'absolute'} custom={5} animate={controls} />
-        <StyledTriangleTopRight color={'#e24d32'} size={large} position={'absolute'} custom={6} animate={controls} />
+        <StyledTriangleBottomLeft color={'#0a0b0f'} size={large} position={'absolute'} custom={6} animate={controls} />
+        <StyledTriangleTopRight color={'#e24d32'} size={large} position={'absolute'} custom={5} animate={controls} />
       </StyledCombine>
       {/* Triangle Split */}
       <StyledCombine size={large}>

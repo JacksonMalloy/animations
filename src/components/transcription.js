@@ -11,8 +11,6 @@ const StyledTranscript = styled(motion.h2)`
 `
 
 export const Transcription = ({ transcript }) => {
-  console.log(`THE TRANSCRIPT: `, transcript)
-
   return (
     <StyledTranscript initial={{ y: 0 }}>
       <>{transcript}</>

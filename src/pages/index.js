@@ -17,9 +17,6 @@ const StyledSection = styled.section`
 const IndexPage = () => {
   const [animation, setAnimation] = useState(null)
   const [transcript, setTranscript] = useState('')
-  const [listening, setListening] = useState(false)
-
-  console.log(`PHASE OF ANIMATION: `, animation)
 
   const handleAnimation = () => {
     if (!animation) {
@@ -49,8 +46,13 @@ const IndexPage = () => {
         <Content animation={animation} />
         <Shapes animation={animation} />
       </StyledSection>
-      <Transcription transcript={transcript} />
-      <SpeechRecognition setTranscript={setTranscript} handleAnimation={handleAnimation} />
+      <Transcription transcript={transcript} animation={animation} />
+      <SpeechRecognition
+        setTranscript={setTranscript}
+        handleAnimation={handleAnimation}
+        transcript={transcript}
+        animation={animation}
+      />
     </Layout>
   )
 }
