@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { BsMicFill } from 'react-icons/bs'
 import Waveform from '../../sound.gif'
 
+import { motion, useAnimation } from 'framer-motion'
+
 const StyledButton = styled.button`
   position: fixed;
   bottom: 2.2rem;
@@ -48,8 +50,27 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
   const { listen, listening, stop, supported } = useSpeechRecognition({ onResult, onEnd, onError })
 
   const handleClick = () => {
-    toggle()
-    handleAnimation()
+    if (!animation) {
+      toggle()
+      handleAnimation()
+    }
+
+    if (animation === 'initialized') {
+      toggle()
+      handleAnimation()
+    }
+
+    if (animation === 'phase one') {
+      handleAnimation()
+    }
+
+    if (animation === 'phase two') {
+      handleAnimation()
+    }
+
+    if (animation === 'leave') {
+      handleAnimation()
+    }
   }
 
   const toggle = listening
@@ -61,16 +82,28 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
 
   return (
     <>
-      {supported ? (
-        <>
-          <StyledButton disabled={blocked} type="button" onClick={handleClick}>
-            {listening ? <img src={Waveform} alt="loading..." className="invert" /> : <BsMicFill />}
-          </StyledButton>
-          {blocked && <p style={{ color: 'red' }}>The microphone is blocked for this site in your browser.</p>}
-        </>
-      ) : (
-        <p>Oh no, it looks like your browser doesn’t support Speech Recognition.</p>
-      )}
+      <StyledButton disabled={blocked} type="button" onClick={handleClick}>
+        {listening ? (
+          <motion.img
+            src={Waveform}
+            alt="loading..."
+            className="invert"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            whileTap={{ y: -80 }}
+          >
+            <BsMicFill />
+          </motion.div>
+        )}
+      </StyledButton>
+      {blocked && <p style={{ color: 'red' }}>The microphone is blocked for this site in your browser.</p>}
     </>
   )
 }
