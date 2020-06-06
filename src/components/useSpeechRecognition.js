@@ -30,7 +30,7 @@ export const useSpeechRecognition = (props = {}) => {
 
   const listen = (args = {}) => {
     if (listening) return
-    const { lang = '', interimResults = true, continuous = true, maxAlternatives = 1, grammars } = args
+    const { lang = '', interimResults = false, continuous = true, maxAlternatives = 1, grammars } = args
     setListening(true)
     recognition.current.lang = lang
     recognition.current.interimResults = interimResults

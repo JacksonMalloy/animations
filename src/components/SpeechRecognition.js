@@ -80,10 +80,20 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
         listen('en-US')
       }
 
-  return (
-    <>
-      <StyledButton disabled={blocked} type="button" onClick={handleClick}>
-        {listening ? (
+  const getButtonComponent = () => {
+    switch (animation) {
+      case null:
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            <BsMicFill />
+          </motion.div>
+        )
+      case 'initialized':
+        return (
           <motion.img
             src={Waveform}
             alt="loading..."
@@ -92,16 +102,23 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
           />
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            whileTap={{ y: -80 }}
-          >
-            <BsMicFill />
-          </motion.div>
-        )}
+        )
+      case 'phase one':
+        return <div>SAVE</div>
+      case 'phase two':
+        return <div>P2</div>
+      case 'leave':
+        return <div>Leaving...</div>
+
+      default:
+        break
+    }
+  }
+
+  return (
+    <>
+      <StyledButton disabled={blocked} type="button" onClick={handleClick}>
+        {getButtonComponent()}
       </StyledButton>
       {blocked && <p style={{ color: 'red' }}>The microphone is blocked for this site in your browser.</p>}
     </>
