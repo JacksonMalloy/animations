@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { motion, useAnimation } from 'framer-motion'
+import { SecondaryContent } from './secondaryContent'
+import { Thanks } from './thanks'
 
 const StyledTranscript = styled(motion.div)`
   position: absolute;
   top: 35%;
-  left: 10%;
+  left: 2rem;
   font-family: 'Gotham Black';
   font-size: 1.2rem;
   max-width: 13rem;
@@ -95,5 +97,11 @@ export const Transcription = ({ transcript, animation }) => {
 
   const actual = renderedTranscript()
 
-  return <StyledTranscript>{actual}</StyledTranscript>
+  return (
+    <>
+      <StyledTranscript>{actual}</StyledTranscript>
+      <SecondaryContent animation={animation} />
+      <Thanks animation={animation} />
+    </>
+  )
 }

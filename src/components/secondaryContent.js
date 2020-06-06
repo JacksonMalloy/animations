@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { motion, useAnimation } from 'framer-motion'
 
 const StyledContent = styled(motion.div)`
+  position: absolute;
+  top: 35%;
+  left: 0.2rem;
+
   h1 {
     font-family: 'Gotham Black';
     font-size: 1.8rem;
@@ -10,29 +14,10 @@ const StyledContent = styled(motion.div)`
   }
 `
 
-export const Content = ({ animation }) => {
+export const SecondaryContent = ({ animation }) => {
   const controls = useAnimation()
 
   useEffect(() => {
-    if (animation === 'initialized') {
-      controls.start((i) => ({
-        y: 90,
-        x: 250,
-        height: 0,
-        transform: `translate3d(0,500px,0)`,
-        transition: { delay: i * 0.1, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
-      }))
-    }
-
-    if (animation === 'phase one') {
-      controls.start((i) => ({
-        x: -250,
-        height: 0,
-        transform: `translate3d(0,500px,0)`,
-        transition: { delay: i * 0.1, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
-      }))
-    }
-
     if (animation === 'phase two') {
       controls.start((i) => ({
         y: 200,
@@ -46,22 +31,23 @@ export const Content = ({ animation }) => {
 
   // Horizontal IN
   useEffect(() => {
-    controls.start((i) => ({
-      x: 250,
-      transition: { delay: i * 0.02, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
-    }))
-  }, [controls])
+    if (animation === 'phase one')
+      controls.start((i) => ({
+        x: 250,
+        transition: { delay: 2 + i * 0.02, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
+      }))
+  }, [controls, animation])
 
   return (
-    <StyledContent initial={{ x: -250, y: -70 }}>
+    <StyledContent initial={{ x: -250, y: -220 }}>
       <motion.h1 custom={1} animate={controls} initial={{ height: 0, y: 222 }}>
-        What’s
+        I can
       </motion.h1>
       <motion.h1 custom={2} animate={controls} initial={{ height: 0, y: 222 }}>
-        on your
+        save this
       </motion.h1>
       <motion.h1 custom={3} animate={controls} initial={{ height: 0, y: 222 }}>
-        mind?
+        if you'd like
       </motion.h1>
     </StyledContent>
   )

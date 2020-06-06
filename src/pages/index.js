@@ -10,8 +10,8 @@ const StyledSection = styled.section`
   display: grid;
   grid-template-columns: 3fr 1fr;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
+  position: relative;
 `
 
 const IndexPage = () => {
@@ -39,6 +39,8 @@ const IndexPage = () => {
       setAnimation('initialized')
     }
   }
+
+  console.log(animation)
 
   return (
     <Layout>

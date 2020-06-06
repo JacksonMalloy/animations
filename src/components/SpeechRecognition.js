@@ -2,22 +2,30 @@ import React, { useState, useEffect } from 'react'
 import { useSpeechRecognition } from './useSpeechRecognition'
 import styled from 'styled-components'
 import { BsMicFill } from 'react-icons/bs'
-import Waveform from '../../sound.gif'
+import { IoIosSave } from 'react-icons/io'
+import { FaCheck } from 'react-icons/fa'
+import { navigate } from 'gatsby'
+import { motion } from 'framer-motion'
 
-import { motion, useAnimation } from 'framer-motion'
-
-const StyledButton = styled.button`
+const StyledButton = styled(motion.button)`
   position: fixed;
   bottom: 2.2rem;
   left: 2.2rem;
   border-radius: 8rem;
   padding: 1.8rem 2rem;
-  background-color: #0a0b0f;
+  background-color: ${({ phase }) => phase};
+  transition: 1s linear;
   color: #ffffff;
   font-family: 'Gotham Black';
   font-size: 1.5rem;
   border: none;
   letter-spacing: 0.2rem;
+  min-width: 82.5px;
+  min-height: 82.5px;
+
+  .text {
+    font-size: 0.8rem;
+  }
 
   .invert {
     filter: invert(100%);
@@ -32,6 +40,14 @@ const StyledButton = styled.button`
 
 export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, animation }) => {
   const [blocked, setBlocked] = useState(false)
+  const [routePush, setRoutePush] = useState(false)
+
+  useEffect(() => {
+    if (routePush) {
+      console.log('pushing to next page')
+      navigate('/page-2')
+    }
+  }, [routePush])
 
   const onEnd = () => {
     // You could do something here after listening has finished
@@ -66,6 +82,9 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
 
     if (animation === 'phase two') {
       handleAnimation()
+      setTimeout(() => {
+        setRoutePush(true)
+      }, 3000)
     }
 
     if (animation === 'leave') {
@@ -84,43 +103,80 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
     switch (animation) {
       case null:
         return (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            <BsMicFill />
-          </motion.div>
+          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#0a0b0f'}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+            >
+              <BsMicFill />
+            </motion.div>
+          </StyledButton>
         )
       case 'initialized':
         return (
-          <motion.img
-            src={Waveform}
-            alt="loading..."
-            className="invert"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          />
+          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#0174f8'}>
+            <motion.div
+              animate={{ opacity: 0.5 }}
+              transition={{
+                yoyo: Infinity,
+                duration: 1.3,
+                ease: 'easeInOut',
+              }}
+            >
+              <BsMicFill />
+            </motion.div>
+          </StyledButton>
         )
       case 'phase one':
-        return <div>SAVE</div>
+        return (
+          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#e24d32'}>
+            <motion.div
+              animate={{ opacity: 0.5 }}
+              transition={{
+                yoyo: Infinity,
+                duration: 1.3,
+                ease: 'easeInOut',
+              }}
+            >
+              <IoIosSave />
+            </motion.div>
+          </StyledButton>
+        )
       case 'phase two':
-        return <div>P2</div>
+        return (
+          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#BFFF00'}>
+            <motion.div
+              animate={{ opacity: 0.5 }}
+              transition={{
+                yoyo: Infinity,
+                duration: 1.3,
+                ease: 'easeInOut',
+              }}
+            >
+              <FaCheck />
+            </motion.div>
+          </StyledButton>
+        )
       case 'leave':
-        return <div>Leaving...</div>
+        return (
+          <StyledButton
+            disabled={blocked}
+            type="button"
+            onClick={handleClick}
+            initial={{ scale: 5 }}
+            animate={{ scale: 100 }}
+            transition={{ duration: 0.5, delay: 1 }}
+            phase={'#0174f8'}
+          >
+            <motion.div></motion.div>
+          </StyledButton>
+        )
 
       default:
         break
     }
   }
 
-  return (
-    <>
-      <StyledButton disabled={blocked} type="button" onClick={handleClick}>
-        {getButtonComponent()}
-      </StyledButton>
-      {blocked && <p style={{ color: 'red' }}>The microphone is blocked for this site in your browser.</p>}
-    </>
-  )
+  return getButtonComponent()
 }
