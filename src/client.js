@@ -1,8 +1,10 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/link-context'
+import fetch from 'isomorphic-fetch'
 
 const httpLink = createHttpLink({
   uri: 'https://graphql.fauna.com/graphql',
+  fetch,
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -17,9 +19,7 @@ const authLink = setContext((_, { headers }) => {
 
 export const isBrowser = typeof window !== 'undefined'
 
-export const client = isBrowser
-  ? new ApolloClient({
-      link: authLink.concat(httpLink),
-      cache: new InMemoryCache(),
-    })
-  : {}
+export const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+})
