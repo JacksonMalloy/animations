@@ -21,34 +21,31 @@ export const Thanks = ({ animation }) => {
   useEffect(() => {
     if (animation === 'phase two')
       controls.start((i) => ({
-        x: 0,
+        y: 222,
         opacity: 1,
-        transition: { delay: 2 + i * 0.02, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
+        transition: {
+          delay: (7 - i) * 0.15,
+          type: 'spring',
+          mass: 0.3,
+          damping: 600,
+          velocity: 10,
+          staggerDirection: -1,
+        },
       }))
-
-    if (animation === 'leave') {
-      controls.start((i) => ({
-        y: 200,
-        x: 0,
-        height: 0,
-        transform: `translate3d(0,500px,0)`,
-        transition: { delay: i * 0.1, type: 'spring', mass: 0.8, damping: 300, velocity: 20 },
-      }))
-    }
   }, [controls, animation])
 
   return (
-    <StyledContent animate={controls} initial={{ opacity: 0 }}>
-      <motion.h1 custom={1} animate={controls} initial={{ height: 0, y: 222 }}>
+    <StyledContent>
+      <motion.h1 custom={6} animate={controls} initial={{ height: 0, y: -522, opacity: 0 }}>
         Thanks!
       </motion.h1>
-      <motion.h1 custom={2} animate={controls} initial={{ height: 0, y: 222 }}>
+      <motion.h1 custom={3} animate={controls} initial={{ height: 0, y: 522, opacity: 0 }}>
         Now go see
       </motion.h1>
-      <motion.h1 custom={3} animate={controls} initial={{ height: 0, y: 222 }}>
+      <motion.h1 custom={2} animate={controls} initial={{ height: 0, y: 522, opacity: 0 }}>
         what others
       </motion.h1>
-      <motion.h1 custom={4} animate={controls} initial={{ height: 0, y: 222 }}>
+      <motion.h1 custom={1} animate={controls} initial={{ height: 0, y: 522, opacity: 0 }}>
         have shared!
       </motion.h1>
     </StyledContent>

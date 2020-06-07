@@ -55,13 +55,10 @@ export const Content = ({ animation }) => {
   return (
     <StyledContent initial={{ x: -250, y: -70 }}>
       <motion.h1 custom={1} animate={controls} initial={{ height: 0, y: 222 }}>
-        What’s
+        What’s on
       </motion.h1>
       <motion.h1 custom={2} animate={controls} initial={{ height: 0, y: 222 }}>
-        on your
-      </motion.h1>
-      <motion.h1 custom={3} animate={controls} initial={{ height: 0, y: 222 }}>
-        mind?
+        your mind?
       </motion.h1>
     </StyledContent>
   )

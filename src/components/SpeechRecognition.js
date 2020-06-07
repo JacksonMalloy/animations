@@ -145,7 +145,7 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
         )
       case 'phase two':
         return (
-          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#BFFF00'}>
+          <StyledButton disabled={blocked} type="button" onClick={handleClick} phase={'#0a0b0f'}>
             <motion.div
               animate={{ opacity: 0.5 }}
               transition={{
@@ -167,7 +167,7 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
             initial={{ scale: 5 }}
             animate={{ scale: 100 }}
             transition={{ duration: 0.5, delay: 1 }}
-            phase={'#0174f8'}
+            phase={'#0a0b0f'}
           >
             <motion.div></motion.div>
           </StyledButton>
