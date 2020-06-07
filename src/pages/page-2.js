@@ -8,6 +8,11 @@ import styled from 'styled-components'
 const StyledStatementContainer = styled.section`
   display: flex;
   padding: 1rem;
+  font-size: 1.5rem;
+  background-color: #0a0b0f;
+  color: #ffffff;
+  margin: 1rem;
+  border-radius: 1rem;
 `
 // Query for fetching on the client
 const GET_ALL_STATEMENTS = gql`
@@ -40,7 +45,7 @@ const SecondPage = () => {
           <StyledStatementContainer key={statement._id}>{statement.utterance}</StyledStatementContainer>
         ))
       ) : (
-        <>Loading...</>
+        <StyledStatementContainer>Loading...</StyledStatementContainer>
       )}
       <Link to="/">Go back to the homepage</Link>
     </Layout>
