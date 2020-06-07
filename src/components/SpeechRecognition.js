@@ -6,6 +6,23 @@ import { IoIosSave } from 'react-icons/io'
 import { FaCheck } from 'react-icons/fa'
 import { navigate } from 'gatsby'
 import { motion } from 'framer-motion'
+import { gql, useMutation } from '@apollo/client'
+
+const ADD_STATEMENT = gql`
+  mutation AddStatement($data: StatementInput!) {
+    createStatement(data: $data) {
+      utterance
+    }
+  }
+`
+
+const SAVE_STATEMENT = gql`
+  mutation SaveStatement($saved: String!) {
+    updateStatement(saved: $saved) {
+      saved
+    }
+  }
+`
 
 const StyledButton = styled(motion.button)`
   position: fixed;
@@ -42,6 +59,9 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
   const [blocked, setBlocked] = useState(false)
   const [routePush, setRoutePush] = useState(false)
 
+  const [addStatement] = useMutation(ADD_STATEMENT)
+  const [saveStatement] = useMutation(SAVE_STATEMENT)
+
   useEffect(() => {
     if (routePush) {
       console.log('pushing to next page')
@@ -74,10 +94,13 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
     if (animation === 'initialized') {
       toggle()
       handleAnimation()
+      addStatement({ variables: { data: { utterance: transcript } } })
     }
 
     if (animation === 'phase one') {
       handleAnimation()
+      // Add state here
+      saveStatement({ variables: { data: { saved: true } } })
     }
 
     if (animation === 'phase two') {

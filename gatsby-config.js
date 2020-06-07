@@ -22,5 +22,16 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`,
       },
     },
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'Fauna',
+        fieldName: 'fauna',
+        url: 'https://graphql.fauna.com/graphql',
+        headers: {
+          Authorization: 'Bearer fnADttXMh8ACE8_nRAt6fj32-s0vzpw-ZaodBOtZ',
+        },
+      },
+    },
   ],
 }
