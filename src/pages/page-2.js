@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import styled from 'styled-components'
+import { motion, useAnimation } from 'framer-motion'
 
-const StyledStatementContainer = styled.section`
+const StyledStatementContainer = styled(motion.section)`
   display: flex;
-  padding: 1rem;
+  padding: 2.5rem;
   font-size: 1.5rem;
   background-color: #0a0b0f;
   color: #ffffff;
@@ -29,25 +30,52 @@ const GET_ALL_STATEMENTS = gql`
 `
 
 const SecondPage = () => {
+  const controls = useAnimation()
+
+  //   Horizontal IN
+  useEffect(() => {
+    controls.start((i) => ({
+      x: 0,
+      transition: { delay: i * 0.05 + 1, type: 'spring', mass: 1.6, damping: 600, velocity: 10, staggerDirection: 1 },
+    }))
+  }, [controls])
+
   const { loading, error, data, networkStatus } = useQuery(GET_ALL_STATEMENTS, {
-    pollInterval: 15000,
+    pollInterval: 875000,
     notifyOnNetworkStatusChange: true,
   })
 
-  if (networkStatus === 4) return 'hello!'
-  if (loading) return 'Loading...'
-  if (error) return `Error! ${error.message}`
+  if (networkStatus === 4 || error)
+    return (
+      <Layout scroll>
+        <StyledStatementContainer>Error! {error.message}</StyledStatementContainer>
+      </Layout>
+    )
+  if (loading)
+    return (
+      <Layout scroll>
+        <StyledStatementContainer>Fetching New Data...</StyledStatementContainer>
+      </Layout>
+    )
 
   return (
-    <Layout>
+    <Layout scroll>
       {!loading && data ? (
-        data.allStatements.data.map((statement) => (
-          <StyledStatementContainer key={statement._id}>{statement.utterance}</StyledStatementContainer>
+        data.allStatements.data.map((statement, i) => (
+          <StyledStatementContainer
+            key={statement._id}
+            custom={i}
+            initial={{ x: 455 }}
+            animate={{ x: 0 }}
+            transition={{ delay: i * 0.1 }}
+          >
+            {statement.utterance}
+          </StyledStatementContainer>
         ))
       ) : (
         <StyledStatementContainer>Loading...</StyledStatementContainer>
       )}
-      <Link to="/">Go back to the homepage</Link>
+      {/* <Link to="/">Go back to the homepage</Link> */}
     </Layout>
   )
 }

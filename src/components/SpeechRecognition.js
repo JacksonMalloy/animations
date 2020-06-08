@@ -92,9 +92,11 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
     }
 
     if (animation === 'initialized') {
-      toggle()
-      handleAnimation()
-      addStatement({ variables: { data: { utterance: transcript } } })
+      if (transcript) {
+        addStatement({ variables: { data: { utterance: transcript } } })
+        toggle()
+        handleAnimation()
+      }
     }
 
     if (animation === 'phase one') {

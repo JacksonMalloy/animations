@@ -7,12 +7,13 @@ const StyledLayout = styled.main`
   margin: 0 auto;
   position: relative;
   height: 100vh;
-  overflow: hidden;
+  overflow: ${({ scroll }) => (scroll ? 'scroll' : 'hidden')};
+  overflow-x: hidden;
 `
 
-const Layout = ({ children }) => {
+const Layout = ({ children, scroll }) => {
   return (
-    <StyledLayout>
+    <StyledLayout scroll={scroll}>
       <GlobalStyle />
       {children}
     </StyledLayout>
