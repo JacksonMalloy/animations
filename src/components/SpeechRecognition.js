@@ -55,7 +55,7 @@ const StyledButton = styled(motion.button)`
   }
 `
 
-export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, animation }) => {
+export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, animation, setIsSupported }) => {
   const [blocked, setBlocked] = useState(false)
   const [routePush, setRoutePush] = useState(false)
 
@@ -65,7 +65,7 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
   useEffect(() => {
     if (routePush) {
       console.log('pushing to next page')
-      navigate('/page-2')
+      navigate('/archive')
     }
   }, [routePush])
 
@@ -83,12 +83,17 @@ export const SpeechRecognition = ({ setTranscript, handleAnimation, transcript, 
     }
   }
 
-  const { listen, listening, stop, supported } = useSpeechRecognition({ onResult, onEnd, onError })
+  const { listen, listening, stop, supported } = useSpeechRecognition({ onResult, onEnd, onError }, setIsSupported)
 
   const handleClick = () => {
     if (!animation) {
       toggle()
       handleAnimation()
+
+      // if (!supported) {
+      //   navigate('/archive')
+      //   setIsSupported(false)
+      // }
     }
 
     if (animation === 'initialized') {

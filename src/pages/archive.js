@@ -29,7 +29,7 @@ const GET_ALL_STATEMENTS = gql`
   }
 `
 
-const SecondPage = () => {
+const Archive = () => {
   const controls = useAnimation()
 
   //   Horizontal IN
@@ -41,7 +41,7 @@ const SecondPage = () => {
   }, [controls])
 
   const { loading, error, data, networkStatus } = useQuery(GET_ALL_STATEMENTS, {
-    pollInterval: 875000,
+    pollInterval: 15000,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -54,30 +54,34 @@ const SecondPage = () => {
   if (loading)
     return (
       <Layout scroll>
-        <StyledStatementContainer>Fetching New Data...</StyledStatementContainer>
+        <div className="centered">
+          <span>Fetching New Data...</span>
+        </div>
       </Layout>
     )
 
   return (
     <Layout scroll>
       {!loading && data ? (
-        data.allStatements.data.map((statement, i) => (
-          <StyledStatementContainer
-            key={statement._id}
-            custom={i}
-            initial={{ x: 455 }}
-            animate={{ x: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            {statement.utterance}
-          </StyledStatementContainer>
-        ))
+        data.allStatements.data
+          .slice(0)
+          .reverse()
+          .map((statement, i) => (
+            <StyledStatementContainer
+              key={statement._id}
+              custom={i}
+              initial={{ x: 455, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: i * 0.1, type: 'spring', mass: 1.6, damping: 600, velocity: 10 }}
+            >
+              {statement.utterance}
+            </StyledStatementContainer>
+          ))
       ) : (
         <StyledStatementContainer>Loading...</StyledStatementContainer>
       )}
-      {/* <Link to="/">Go back to the homepage</Link> */}
     </Layout>
   )
 }
 
-export default SecondPage
+export default Archive

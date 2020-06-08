@@ -5,7 +5,7 @@ if (typeof window !== `undefined`) {
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 }
 
-export const useSpeechRecognition = (props = {}) => {
+export const useSpeechRecognition = (props = {}, setIsSupported) => {
   const { onEnd = () => {}, onResult = () => {}, onError = () => {} } = props
   const recognition = useRef(null)
   const [listening, setListening] = useState(false)
@@ -30,7 +30,7 @@ export const useSpeechRecognition = (props = {}) => {
 
   const listen = (args = {}) => {
     if (listening) return
-    const { lang = '', interimResults = false, continuous = true, maxAlternatives = 1, grammars } = args
+    const { lang = 'en-US', interimResults = true, continuous = false, maxAlternatives = 1, grammars } = args
     setListening(true)
     recognition.current.lang = lang
     recognition.current.interimResults = interimResults
@@ -58,7 +58,10 @@ export const useSpeechRecognition = (props = {}) => {
   }
 
   useEffect(() => {
-    if (!supported) return
+    if (!supported) {
+      setIsSupported(false)
+      return
+    }
     recognition.current = new window.SpeechRecognition()
   }, [])
 

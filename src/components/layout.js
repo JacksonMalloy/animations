@@ -9,6 +9,18 @@ const StyledLayout = styled.main`
   height: 100vh;
   overflow: ${({ scroll }) => (scroll ? 'scroll' : 'hidden')};
   overflow-x: hidden;
+
+  .centered {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-family: 'Gotham Black';
+  }
 `
 
 const Layout = ({ children, scroll }) => {

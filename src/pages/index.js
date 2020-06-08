@@ -14,9 +14,20 @@ const StyledSection = styled.section`
   position: relative;
 `
 
+const StyledSupported = styled.section`
+  font-family: 'Gotham Light';
+  font-weight: 900;
+  background-color: red;
+  padding: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  color: white;
+`
+
 const IndexPage = () => {
   const [animation, setAnimation] = useState(null)
   const [transcript, setTranscript] = useState('')
+  const [isSupported, setIsSupported] = useState(true)
 
   const handleAnimation = () => {
     if (!animation) {
@@ -44,6 +55,12 @@ const IndexPage = () => {
 
   return (
     <Layout>
+      {!isSupported ? (
+        <StyledSupported>
+          The Speech Recognition API is currently only supported by Chrome and will not work within this browser. Sorry
+          for the inconvenience!
+        </StyledSupported>
+      ) : null}
       <StyledSection>
         <Content animation={animation} />
         <Shapes animation={animation} />
@@ -54,6 +71,7 @@ const IndexPage = () => {
         handleAnimation={handleAnimation}
         transcript={transcript}
         animation={animation}
+        setIsSupported={setIsSupported}
       />
     </Layout>
   )
