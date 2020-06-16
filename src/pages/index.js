@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import Layout from '../components/layout'
+import { motion, useAnimation } from 'framer-motion'
 import styled from 'styled-components'
+import Image from '../components/image'
+import Layout from '../components/layout'
 import { Shapes } from '../components/shapes'
 import { Content } from '../components/content'
 import { SpeechRecognition } from '../components/SpeechRecognition'
@@ -55,6 +57,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
+      <InspiredBy />
       {!isSupported ? (
         <StyledSupported>
           The Speech Recognition API is currently only supported by Chrome and will not work within this browser. Sorry
@@ -78,3 +81,64 @@ const IndexPage = () => {
 }
 
 export default IndexPage
+
+const StyledInspired = styled(motion.div)`
+  font-family: 'Gotham Light';
+  font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #4862d3;
+  font-size: 0.8rem;
+  z-index: 10;
+
+  a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    z-index: 10;
+    position: relative;
+    padding-left: 2.5rem;
+
+    .gatsby-image-wrapper {
+      position: absolute !important;
+      top: -10px;
+      left: 0;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  span {
+    cursor: pointer;
+    color: #ffffff;
+    padding-left: 1rem;
+    font-size: 1.2rem;
+  }
+`
+
+const InspiredBy = () => {
+  const [isClosed, setIsClosed] = useState(false)
+
+  const handleClick = () => {
+    setIsClosed(true)
+  }
+
+  return (
+    <>
+      {isClosed ? null : (
+        <StyledInspired initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.61, delay: 1 }}>
+          <a href="https://www.turtleinc.com/" target="_blank" rel="noreferrer">
+            Design Inspired By <Image /> Turtle Design Inc.
+          </a>
+          <span onClick={handleClick}>x</span>
+        </StyledInspired>
+      )}
+    </>
+  )
+}
